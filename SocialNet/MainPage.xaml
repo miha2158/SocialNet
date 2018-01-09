@@ -7,7 +7,71 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Name="MainGrid" Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Loaded="MainGrid_OnLoaded">
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="11*" MinWidth="300"/>
+            <ColumnDefinition Width="30*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" MinHeight="100"/>
+            <RowDefinition Height="8*"/>
+        </Grid.RowDefinitions>
+
+        <Button Name="NewUser" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="150" FontSize="25" Content="New User" Click="NewUser_Click" />
+        <Button Name="UserName" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="2" MinWidth="400" FontSize="50" Content="Имя Будет Здесь" Tapped="UserName_OnTapped" Background="WhiteSmoke"/>
+        <ComboBox Name="ChooseUser" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1" MinWidth="300" FontSize="21" Margin="30" ItemsSource="{x:Bind AllUsers}" SelectionChanged="ChooseUser_SelectionChanged"/>
+
+        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15*" />
+                    <ColumnDefinition Width="10*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock FontSize="32" Text="Friends" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button Name="AddFriendButton" FontSize="20"  Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Add Friend" Click="AddFriendButton_Click" />
+            </Grid>
+            <ListView Name="FriendsList" VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ActiveUserSubscriptions}" MaxHeight="700" MinHeight="200">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Name="FriendItemName" FontSize="25" Text="{Binding FullName}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Tapped="FriendItemName_OnTapped" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+
+        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1">
+            <TextBlock Name="NewsFeedLabel" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30" Margin="10" Text="News Feed" PointerPressed="NewsFeedLabel_OnTapped"/>
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="45" />
+                    <ColumnDefinition Width="20*" />
+                    <ColumnDefinition Width="3*" MinWidth="110" />
+                </Grid.ColumnDefinitions>
+                <Button Name="AddImageToNewNewsItem" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Content="+" Click="AddImageToNewNewsItem_Click"/>
+                <TextBox Name="NewNewsText" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="1" FontSize="20" AcceptsReturn="True"/>
+                <Button Name="PostNewNewsItem" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="2" Content="Опуликовать" Click="PostNewNewsItem_Click"/>
+            </Grid>
+            <ListView Name="NewsFeed" VerticalAlignment="Top" HorizontalAlignment="Stretch" ItemsSource="{x:Bind Posts}" MaxHeight="700" MinHeight="200">
+               <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Name="NewsPost" Tapped="NewsPost_OnTapped">
+
+                            <TextBlock Name="PostOwnerName"  Text="{Binding publisher}" FontSize="25" />
+                            <TextBlock Text="{Binding Image.UriSource}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Image Name="PostImage" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Image.Source>
+                                    <BitmapImage UriSource="{Binding Image.UriSource}"/>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Name="PostContent" FontSize="20" Text="{Binding Content}" />
+                            <Grid Width="4"/>
+                        </StackPanel>
+                    </DataTemplate>
+               </ListView.ItemTemplate> 
+            </ListView>
+        </StackPanel>
+
 
     </Grid>
 </Page>
